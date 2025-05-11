@@ -15,10 +15,10 @@ jobs:
 
       - name: Create PEM file
         run: |
-          echo "${{ secrets.EC2_KEY }}" > ec2-key.pem
-          chmod 600 ec2-key.pem
+          echo "${{ secrets.EC2_KEY }}" > iqbal-keypair.pem
+          chmod 600 iqbal-keypair.pem
 
       - name: Deploy via SSH
         run: |
-          scp -i ec2-key.pem -o StrictHostKeyChecking=no index.html ec2-user@${{ secrets.EC2_HOST }}:/home/deploy-html-with-ga/
+          scp -i iqbal-keypair.pem -o StrictHostKeyChecking=no index.html ec2-user@${{ secrets.EC2_HOST }}:/home/deploy-html-with-ga/
         # replace `ec2-user` with your actual EC2 username
