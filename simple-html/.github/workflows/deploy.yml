@@ -13,12 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Create PEM file
+      - name: Set up SSH key
         run: |
           echo "${{ secrets.EC2_KEY }}" > iqbal-keypair.pem
           chmod 600 iqbal-keypair.pem
 
-      - name: Deploy via SSH
+      - name: Deploy via SCP
         run: |
-          scp -i iqbal-keypair.pem -o StrictHostKeyChecking=no index.html ec2-user@${{ secrets.EC2_HOST }}:/home/deploy-html-with-ga/
-        # replace `ec2-user` with your actual EC2 username
+          scp -i iqbal-keypair.pem -o StrictHostKeyChecking=no index.html ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/
