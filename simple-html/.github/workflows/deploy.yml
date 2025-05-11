@@ -1,9 +1,9 @@
-name: Deploy to EC2
+name: Deploy Website
 
 on:
   push:
     branches:
-      - main
+      - main # Or your main branch name
 
 jobs:
   deploy:
@@ -11,13 +11,13 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up SSH key
+      - name: Write private key
         run: |
-          echo "${{ secrets.EC2_KEY }}" > iqbal-keypair.pem
-          chmod 600 iqbal-keypair.pem
+          echo "${{ secrets.IQBAL_KEYPAIR_PEM }}" > iqbal-keypair.pem
+          chmod 400 iqbal-keypair.pem
 
-      - name: Deploy via SCP
+      - name: Deploy to server
         run: |
-          scp -i iqbal-keypair.pem -o StrictHostKeyChecking=no index.html ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/
+          scp -i iqbal-keypair.pem -o StrictHostKeyChecking=no simple-html/index.html ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/tmp/index.html
